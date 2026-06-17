@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GRAG — Document Q&A Portal</title>
+    <meta name="description" content="GRAG: A premium Retrieval-Augmented Generation portal. Ask questions against your uploaded PDFs, books, and notes powered by Groq LLM.">
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%2300f0ff'/><text x='50' y='65' font-size='60' font-weight='bold' text-anchor='middle' fill='%23060515' font-family='Arial'>G</text></svg>">
+    <!-- Modern Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- App Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="glass-bg"></div>
+    <div class="stars"></div>
+
+    <div class="app-container">
+        <!-- ══ Sidebar ══════════════════════════════════════════════════════ -->
+        <aside class="sidebar glass-panel">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="fa-solid fa-circle-nodes glow-icon"></i>
+                    <span>G<span class="highlight">RAG</span></span>
+                </div>
+                <p class="tagline">Generative Retrieval-Augmented Generation</p>
+            </div>
+
+            <!-- Vector Database Status -->
+            <div class="section-card">
+                <h3><i class="fa-solid fa-server"></i> Vector Database</h3>
+                <div class="status-indicator-container">
+                    <span id="db-status-dot" class="status-dot offline"></span>
+                    <span id="db-status-text" class="status-text">Connecting…</span>
+                </div>
+                <div class="db-details">
+                    <div class="detail-row">
+                        <span>Chunks Indexed:</span>
+                        <strong id="chunk-count">0</strong>
+                    </div>
+                </div>
+
+                <button id="rebuild-btn" class="btn primary-btn btn-full">
+                    <i class="fa-solid fa-arrows-rotate"></i> Rebuild Index
+                </button>
+                <div id="rebuild-progress-container" class="progress-container hidden">
+                    <div class="spinner-container">
+                        <i class="fa-solid fa-circle-notch fa-spin"></i>
+                        <span id="rebuild-progress-msg">Initializing…</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Loaded Documents -->
+            <div class="section-card document-section">
+                <h3><i class="fa-solid fa-folder-open"></i> Loaded Sources</h3>
+                <div class="doc-list-scroll">
+                    <ul id="document-list" class="doc-list">
+                        <li class="empty-list-msg">No files indexed yet.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="sidebar-footer">
+                <span><i class="fa-solid fa-code"></i> Developer Showcase</span>
+            </div>
+        </aside>
+
+        <!-- ══ Main Content ══════════════════════════════════════════════════ -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="main-header glass-panel">
+                <div class="header-info">
+                    <h1>Document Q&amp;A Portal</h1>
+                    <p>Ask questions against your indexed textbooks, PDFs, and notes — powered by GRAG.</p>
+                </div>
+                <div class="header-actions">
+                    <button id="clear-chat-btn" class="btn secondary-btn">
+                        <i class="fa-solid fa-trash-can"></i> Clear Chat
+                    </button>
+                </div>
+            </header>
+
+            <!-- Chat Zone -->
+            <div class="chat-zone glass-panel">
+                <div id="chat-messages" class="messages-container">
+                    <!-- Greeting -->
+                    <div class="message system-msg">
+                        <div class="msg-avatar"><i class="fa-solid fa-robot"></i></div>
+                        <div class="msg-bubble">
+                            <p>Hello! I'm your <strong>GRAG Assistant</strong>. Ask me anything about your indexed documents — C programming, data structures, machine learning, and more.</p>
+                            <div class="suggestion-chips">
+                                <span class="suggestion-chip">What is a pointer in C?</span>
+                                <span class="suggestion-chip">Explain binary search trees.</span>
+                                <span class="suggestion-chip">How does memory management work in C?</span>
+                                <span class="suggestion-chip">What are arrays in C?</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Input -->
+                <div class="chat-input-container">
+                    <form id="chat-form" class="chat-form">
+                        <input type="text" id="query-input" placeholder="Ask a question about your documents…" autocomplete="off" required>
+                        <button type="submit" id="send-btn" class="btn send-btn" title="Send">
+                            <i class="fa-solid fa-paper-plane"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Resource credit footer -->
+            <footer class="resource-footer">
+                <span>
+                    inspiration:
+                    <a href="https://www.youtube.com/@krishnaik06" target="_blank" rel="noopener">
+                        <i class="fa-brands fa-youtube"></i> Follow Krish Naik
+                    </a>
+                </span>
+            </footer>
+        </main>
+
+        <!-- ══ Source Inspector Drawer ═══════════════════════════════════════ -->
+        <div id="source-drawer" class="source-drawer glass-panel slide-hidden">
+            <div class="drawer-header">
+                <h2><i class="fa-solid fa-quote-left"></i> Retrieved Context Sources</h2>
+                <button id="close-drawer-btn" class="close-btn"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div id="drawer-content" class="drawer-body">
+                <!-- Dynamically populated source cards -->
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

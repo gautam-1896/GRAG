@@ -1,0 +1,19 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+
+# Local environment variables
+.env
+
+# Persisted vector stores and generated data
+faiss_store/
+faiss_store_test/
+*.pkl
+*.sqlite3
