@@ -1,19 +1,33 @@
-# Python-generated files
+# Python cache
 __pycache__/
-*.py[oc]
+*.py[cod]
+
+# Build files
 build/
 dist/
 wheels/
-*.egg-info
+*.egg-info/
 
-# Virtual environments
-.venv
+# Virtual environment
+.venv/
 
-# Local environment variables
+# Environment variables
 .env
 
-# Persisted vector stores and generated data
+# VS Code settings
+.vscode/
+
+# Vector stores
+data/vector_store/
 faiss_store/
 faiss_store_test/
-*.pkl
+
+# PDF dataset
+data/pdf/
+
+# Database and serialized files
 *.sqlite3
+*.pkl
+# RAG datasets (IMPORTANT)
+data/pdf/
+data/vector_store/
